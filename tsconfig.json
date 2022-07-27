@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2016"],
+    "module": "esnext",
+    "allowJs": true
+  },
+  "exclude": [
+    "node_modules/**"
+  ],
+  "include": [
+    "src/**/*"
+  ]
+}
