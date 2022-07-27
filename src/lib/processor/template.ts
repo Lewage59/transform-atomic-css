@@ -1,5 +1,5 @@
 /* eslint-disable semi */
-import parseHandler from 'htmlparser2';
+import { parseDocument } from 'htmlparser2';
 import stringifyHandler from 'dom-serializer';
 import _ from 'lodash';
 
@@ -9,8 +9,8 @@ interface Document {
 }
 
 interface OutputTemplateObject {
-  result: [];
-  classList: [];
+  result: string[] | string;
+  classList: string[];
   start: number;
   end: number;
 }
@@ -34,14 +34,15 @@ export interface Node {
 
 export default class TemplateProcessor {
   private _content: string;
-  private _ast: Document;
-  constructor (content) {
+  private _ast: Document | undefined;
+  constructor (content: string) {
     this._content = content;
+    this._ast = undefined
   }
 
   // Template to AST
   parse (content = this._content) {
-    this._ast = parseHandler.parseDocument(content, {
+    this._ast = parseDocument(content, {
       decodeEntities: false,
       lowerCaseTags: false,
       lowerCaseAttributeNames: false,

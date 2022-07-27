@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node ./test"
   },
   "keywords": [
     "css"
@@ -16,8 +16,10 @@
     "rollup-plugin-json": "^4.0.0"
   },
   "dependencies": {
-    "@types/htmlparser2": "^3.10.3",
+    "@types/css": "^0.0.33",
+    "@types/less": "^3.0.3",
     "@types/lodash": "^4.14.182",
+    "@types/minimatch": "^3.0.5",
     "css": "^3.0.0",
     "dom-serializer": "^2.0.0",
     "htmlparser2": "^8.0.1",

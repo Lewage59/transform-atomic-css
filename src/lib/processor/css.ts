@@ -4,8 +4,8 @@ import cssHandler from 'css'
 import _ from 'lodash'
 
 interface TraverseCallback {
-  enter: () => void,
-  leave: () => void
+  enter: (node: Node) => void,
+  leave: (node: Node) => void
 }
 
 interface Node {
@@ -21,7 +21,7 @@ const importStypeRegex: RegExp = /@import\s'.*?';?/g
 
 export default class CssProcessor {
   private _content: string
-  constructor (content) {
+  constructor (content: string) {
     this._content = content;
   }
 
@@ -85,7 +85,7 @@ export default class CssProcessor {
   }
 
   // CSS AST to String
-  stringify (ast) {
+  stringify (ast: any) {
     if (this.importStype) {
       return this.importStype.join('\n') + cssHandler.stringify(ast)
     }

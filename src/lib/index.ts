@@ -11,38 +11,7 @@ import { staticUtilities, StaticUtilities } from './config/utilities'
 // Load the core build.
 import { isSize, isPercent, isFloat, isNegative, getSizeValue, hasMatchPath, absToRelPath } from '../utils'
 
-export default async function (content, extraOptions) {
-  // 读取 windicss 配置文件
-  const customConfig = require('../windi.config.ts')
-
-  // 处理分别是 windi loader 和 webpack loader
-  const rootPath = extraOptions?.root || this.rootContext
-  const currPath = extraOptions?.path || this.resourcePath
-  const loaderOptions = {
-    include: customConfig.extract?.include,
-    exclude: customConfig.extract?.exclude
-  }
-
-  // 相对路径转换
-  if (loaderOptions.include) {
-    loaderOptions.include = loaderOptions.include.map((path) => {
-      return absToRelPath(rootPath, path)
-    })
-  }
-  if (loaderOptions.exclude) {
-    loaderOptions.exclude = loaderOptions.exclude.map((path) => {
-      return absToRelPath(rootPath, path)
-    })
-  }
-
-  // loaderOptions对象属性
-  if (loaderOptions) {
-    const relativePath = absToRelPath(rootPath, currPath)
-    const { include, exclude } = loaderOptions
-    if (!(include && hasMatchPath(include, relativePath)) || (exclude && hasMatchPath(exclude, relativePath))) {
-      return content
-    }
-  }
+export default async function (content: string) {
 
   // config
   const prefix = 'c-'
@@ -62,8 +31,8 @@ export default async function (content, extraOptions) {
   // split script
   const scriptStartReg = /<script.*>/im
   const scriptEndReg = /<\/script>/im
-  const startTag = content.match(scriptStartReg)
-  const endTag = content.match(scriptEndReg)
+  const startTag: any = content.match(scriptStartReg)
+  const endTag: any = content.match(scriptEndReg)
   const startIndex = content.indexOf(startTag)
   const endIndex = content.indexOf(endTag)
   const scriptContent = content.slice(startIndex, endIndex + endTag[0].length)
@@ -73,7 +42,7 @@ export default async function (content, extraOptions) {
 
   // CSS to AST（default parse Less）
   const cssProcessor = new CssProcessor(content)
-  const cssAst = await cssProcessor.parse()
+  const cssAst: any = await cssProcessor.parse()
 
   // 收集 Class Name 对应的 windi CSS 工具类
   const rulesMap = new Map()
@@ -92,7 +61,7 @@ export default async function (content, extraOptions) {
   // const conditionalStrip = mpxConditionalStrip()
   // 遍历 CSS AST
   cssProcessor.traverse(cssAst, {
-    enter (node) {
+    enter (node: any) {
       // 注释
       // if (node.type === 'comment') {
       //   // mpx条件编译情况
@@ -107,7 +76,7 @@ export default async function (content, extraOptions) {
         // css是否转换
         node.isTransform = true
         // 判断是否为类选择器，是则进行转换，否则不转换
-        const isTransform = node.selectors.every((selector) => {
+        const isTransform = node.selectors.every((selector: any) => {
           const selectorHandler = new SelectorHandler(selector)
           return !selectorHandler.isIntersectSelector && selectorHandler.isClassSelector
         })
@@ -179,19 +148,19 @@ export default async function (content, extraOptions) {
         }
       }
     },
-    leave (node) {
+    leave (node: any) {
       // 只处理可转换的选择器
       if (node.type === 'rule' && node.isTransform) {
         const { selectors } = node
 
         // check selectors in js
-        const isRemove = selectors.some((item) => {
+        const isRemove = selectors.some((item: any) => {
           return jsClasses.indexOf(item as never) > -1
         })
 
         // remove declarations
         if (!isRemove) {
-          node.declarations = node.declarations.filter((item) => {
+          node.declarations = node.declarations.filter((item: any) => {
             if (_.has(singleClass.utilities, item.property)) {
               return false
             }
@@ -200,7 +169,7 @@ export default async function (content, extraOptions) {
         }
 
         // 收集样式规则
-        selectors.forEach((selector) => {
+        selectors.forEach((selector: any) => {
           // 判断是否存规则名
           if (rulesMap.has(selector)) {
             // 同一样式合并且覆盖重复设置样式
@@ -220,7 +189,7 @@ export default async function (content, extraOptions) {
   } as any)
 
   // 检测是否为变量
-  function variableCheck (val) {
+  function variableCheck (val: string) {
     const len = val.length
     for (let i = 0; i < 2; i++) {
       const start = val[i]
@@ -233,13 +202,13 @@ export default async function (content, extraOptions) {
   }
 
   // 将字符串解析出来，并生成数组
-  function parseString (str) {
+  function parseString (str: string): [] {
     const length = str.length
     let currIndex = 0
     let char
     let inStr = false
     let singleStr: string = ''
-    let strArray = []
+    let strArray: [] = []
 
     while (currIndex < length) {
       char = str.charAt(currIndex)
@@ -256,7 +225,7 @@ export default async function (content, extraOptions) {
     return strArray
   }
 
-  function matchStyleUtilities (className, cb) {
+  function matchStyleUtilities (className: string, cb: any) {
     const buildSelector = '.' + className
     if (rulesMap.has(buildSelector)) {
       const { utilities = {}, isUseAll = false } = rulesMap.get(buildSelector)
@@ -271,10 +240,10 @@ export default async function (content, extraOptions) {
   tempalteProcessor.traverse(htmlAst.children[0], function (node: any): void {
     if (_.has(node.attribs, 'class') && node.type === 'tag') {
       const classArr = node.attribs.class.split(' ')
-      const customClass = []
-      const toolStr = classArr.reduce((pre, currVal) => {
+      const customClass: [] = []
+      const toolStr = classArr.reduce((pre: any, currVal: string) => {
         let useStatus = false
-        const utilities = matchStyleUtilities(currVal, function (rule) {
+        const utilities = matchStyleUtilities(currVal, function (rule: any) {
           // !! 暂时关闭移除 Dom 中 Classname 能力
           // useStatus = rule.isUseAll
         })
@@ -283,7 +252,7 @@ export default async function (content, extraOptions) {
             if (val) {
               const tmpStr = currVal.split(val)
               let varStatus = false
-              const utilities2 = matchStyleUtilities(val, function (rule) {
+              const utilities2 = matchStyleUtilities(val, function (rule: any) {
                 // !! 暂时关闭移除 Dom 中 Classname 能力
                 // varStatus = rule.isUseAll
               })

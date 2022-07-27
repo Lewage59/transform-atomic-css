@@ -5,14 +5,14 @@ import minimatch from 'minimatch'
 /**
  * 判断是否表示为尺寸
  */
-export function isSize (amount) {
+export function isSize (amount: any) {
   return /^-?(\d+(\.\d+)?)+(rem|em|px|rpx|vh|vw|ch|ex)$/.test(amount)
 }
 
 /**
  * 判断是否为小数
  */
-export function isFloat (amount) {
+export function isFloat (amount: any) {
   return /^-?\d+\.\d+$/.test(amount)
 }
 
@@ -32,7 +32,7 @@ export function isNumber (amount: string, start?: number, end?: number, type?: s
   return num >= start && num <= end
 }
 
-export function isNegative (val) {
+export function isNegative (val: string) {
   if (isNumber(val)) {
     return val[0] === '-'
   }
@@ -42,7 +42,7 @@ export function isNegative (val) {
 /**
  * 获取尺寸值
  */
-export function getSizeValue (val) {
+export function getSizeValue (val: string) {
   if (isSize(val)) {
     return val.replace(/(rem|em|px|rpx|vh|vw|ch|ex)$/, '')
   }
@@ -53,14 +53,14 @@ export function getSizeValue (val) {
 /**
  * 判断是否为百分数
  */
-export function isPercent (amount) {
+export function isPercent (amount: string) {
   return /\d+%$/g.test(amount)
 }
 
 /**
  * 路径匹配校验
  */
-export function hasMatchPath (patterns, resourcePath) {
+export function hasMatchPath (patterns: any, resourcePath: any) {
   if (!resourcePath) {
     return false
   }
@@ -78,6 +78,6 @@ export function hasMatchPath (patterns, resourcePath) {
 /**
  * 绝对路径 to 相对路径
  */
-export function absToRelPath (rootPath, currPath) {
+export function absToRelPath (rootPath: any, currPath: any) {
   return currPath.replace(rootPath + '/', '')
 }

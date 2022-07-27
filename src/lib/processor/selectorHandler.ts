@@ -4,11 +4,11 @@
 
 export default class SelectorHandler {
   _selector
-  constructor (raw) {
+  constructor (raw: any) {
     this._selector = raw
   }
 
-  test (patt) {
+  test (patt: any) {
     return patt.test(this._selector)
   }
 
