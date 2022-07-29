@@ -3,7 +3,7 @@ import typescript from 'rollup-plugin-typescript2';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import babel from 'rollup-plugin-babel'
-import { terser } from 'rollup-plugin-terser';
+// import { terser } from 'rollup-plugin-terser';
 
 const pkg = require('./package.json')
 
@@ -11,7 +11,8 @@ export default {
   input: 'src/index.ts',
   output: {
     file: pkg.main,
-    format: 'cjs'
+    format: 'cjs',
+    exports: 'auto'
   },
   plugins: [
     json(),
@@ -23,7 +24,7 @@ export default {
     babel({
       exclude: 'node_modules/**'
     }),
-    terser(),
+    // terser(),
   ],
   external: ['css', 'dom-serializer', 'htmlparser2', 'less', 'lodash', 'minimatch'],
 };

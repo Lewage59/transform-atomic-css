@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c",
-    "test": "ts-node ./test"
+    "test": "ts-node ./test/index.ts"
   },
   "keywords": [
     "css"
@@ -13,6 +13,7 @@
   "files": [
     "dist"
   ],
+  "type": "module",
   "author": "wallee",
   "license": "ISC",
   "devDependencies": {
