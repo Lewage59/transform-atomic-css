@@ -11,7 +11,7 @@ import { staticUtilities, StaticUtilities } from './config/utilities'
 // Load the core build.
 import { isSize, isPercent, isFloat, isNegative, getSizeValue, hasMatchPath, absToRelPath } from '../utils'
 
-export default async function (content: string) {
+export async function transformer(content: string) {
 
   // config
   const prefix = 'c-'
@@ -279,3 +279,5 @@ export default async function (content: string) {
 
   return content
 }
+
+export default transformer
