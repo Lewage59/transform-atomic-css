@@ -14,7 +14,7 @@ export default {
   plugins: [
     json(),
     typescript({
-      useTsconfigDeclarationDir: true
+      tsconfig: 'tsconfig.json',
     }),
     commonjs(),
     nodeResolve(),
