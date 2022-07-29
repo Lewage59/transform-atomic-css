@@ -2,7 +2,7 @@
   "name": "transform-atomic-css",
   "version": "0.0.1-alpha.1",
   "description": "a tool for transform atomic CSS.",
-  "main": "dist/bundle.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c",
     "test": "ts-node ./test"
