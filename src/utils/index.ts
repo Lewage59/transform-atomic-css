@@ -1,5 +1,3 @@
-
-
 import minimatch from 'minimatch'
 
 /**
@@ -53,14 +51,14 @@ export function getSizeValue (val: string) {
 /**
  * 判断是否为百分数
  */
-export function isPercent (amount: string) {
+export function isPercent (amount: string): boolean {
   return /\d+%$/g.test(amount)
 }
 
 /**
  * 路径匹配校验
  */
-export function hasMatchPath (patterns: any, resourcePath: any) {
+export function hasMatchPath (patterns: Array<string>, resourcePath?: string): boolean {
   if (!resourcePath) {
     return false
   }
@@ -78,6 +76,6 @@ export function hasMatchPath (patterns: any, resourcePath: any) {
 /**
  * 绝对路径 to 相对路径
  */
-export function absToRelPath (rootPath: any, currPath: any) {
+export function absToRelPath (rootPath: string, currPath: string): string {
   return currPath.replace(rootPath + '/', '')
 }

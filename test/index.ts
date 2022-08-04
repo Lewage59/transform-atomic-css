@@ -1,4 +1,4 @@
-import transformer from '../src/index'
+const { transformer } = require('../dist/index')
 
 const result = transformer(`
 <!--对应wxml文件-->
