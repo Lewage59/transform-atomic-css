@@ -3,34 +3,32 @@ import minimatch from 'minimatch'
 /**
  * 判断是否表示为尺寸
  */
-export function isSize (amount: any) {
+export function isSize (amount: string): boolean {
   return /^-?(\d+(\.\d+)?)+(rem|em|px|rpx|vh|vw|ch|ex)$/.test(amount)
 }
 
 /**
  * 判断是否为小数
  */
-export function isFloat (amount: any) {
+export function isFloat (amount: string): boolean {
   return /^-?\d+\.\d+$/.test(amount)
 }
 
 /**
  * 判断是否为数值类型
  */
-export function isNumber (amount: string, start?: number, end?: number, type?: string) {
-  start = -Infinity
-  end = Infinity
-  const isInt = /^-?\d+$/.test(amount)
+export function isNumber (amount: string, start = -Infinity, end = Infinity, type?: string): boolean {
+  const isInt: boolean = /^-?\d+$/.test(amount)
   if (type === 'int') {
     if (!isInt) return false
   } else {
     if (!(isInt || isFloat(amount))) return false
   }
-  const num = parseFloat(amount)
+  const num: number = parseFloat(amount)
   return num >= start && num <= end
 }
 
-export function isNegative (val: string) {
+export function isNegative (val: string): boolean {
   if (isNumber(val)) {
     return val[0] === '-'
   }
@@ -40,7 +38,7 @@ export function isNegative (val: string) {
 /**
  * 获取尺寸值
  */
-export function getSizeValue (val: string) {
+export function getSizeValue (val: string): string {
   if (isSize(val)) {
     return val.replace(/(rem|em|px|rpx|vh|vw|ch|ex)$/, '')
   }
